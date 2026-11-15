@@ -5,10 +5,16 @@ description: Google Play 출시 준비 — 요건(테스터 12명×14일, target
 
 # Play 스토어 출시
 
-완성된 예시: 스도쿠 저장소의 `store/` (`/home/noble/app_development/sudoku/store/`) —
-`PUBLISHING.md`(콘솔 단계별 절차), `LISTING.md`(문안·설문 답), `TESTERS.md`(테스터 모집·안내문),
-`capture.sh`·`shots.html`(스크린샷), `graphic.html`·`capture-graphic.sh`(그래픽 이미지).
-새 앱은 이 파일들을 `store/` 로 복사해 앱에 맞게 고치는 데서 시작한다.
+완성된 예시 두 가지. 앱 종류가 가까운 쪽의 `store/` 를 복사해 앱에 맞게 고치는 데서 시작한다.
+
+| 앱 종류 | 견본 | 특히 볼 것 |
+|---|---|---|
+| 오프라인 웹앱(WebView), 권한·수집 없음 | 스도쿠 `/home/noble/app_development/sudoku/store/` | 데이터 보안 "수집 안 함", 웹 촬영대 `shots.html`·`capture.sh` |
+| Flutter, 위치·센서·백그라운드·광고 | 톡톡런 `/home/noble/app_development/running/store/` | 데이터 보안 항목별 표, 포그라운드 서비스·건강 앱 신고, 광고·광고 ID, 지도 키 SHA-1, 공개 방침 저장소 |
+
+두 견본 모두 `PUBLISHING.md`(콘솔 단계별 절차), `LISTING.md`(문안·설문 답), `TESTERS.md`(테스터 모집·안내문),
+`graphic.html`(그래픽 이미지 1024×500)이 있다. 톡톡런 `TESTERS.md` 가 더 최신이다.
+권한·수집이 하나라도 생기면(인터넷, 위치, 광고) 스도쿠가 아니라 톡톡런 쪽 답을 출발점으로 삼는다.
 
 ## 먼저 확인할 것 (일정을 좌우함)
 
@@ -22,21 +28,36 @@ description: Google Play 출시 준비 — 요건(테스터 12명×14일, target
 
 | 항목 | 규격 / 방법 |
 |---|---|
-| AAB | `./gradlew bundleRelease` (`android-build`), 업로드 키 서명, versionCode 증가 |
-| 앱 아이콘 | 512×512 **32비트 PNG(알파 포함)** — `icon-512.png` (`app-icon`) |
+| AAB | 웹앱 `./gradlew bundleRelease` (`android-build`) / Flutter `flutter build appbundle` (`flutter-app`), 업로드 키 서명, versionCode 증가 |
+| 앱 아이콘 | 512×512 **32비트 PNG(알파 포함)** — `icon-512.png` (`app-icon`, Flutter 는 안드로이드 아이콘도) |
 | 그래픽 이미지 | 1024×500 PNG — HTML 로 그려 `web-verify/scripts/shot.sh graphic.html out.png 1024 500` |
 | 휴대전화 스크린샷 | 2~8장, 1080×1920(9:16). 원본을 찍고 `scripts/frame.sh` 로 제목·부제를 얹는다 (아래) |
 | 문안 | 앱 이름(30자), 짧은 설명(80자), 자세한 설명(4000자) — 한국어·영어 |
-| 개인정보처리방침 | `privacy.html` 을 저장소 루트에 두고 Pages 로 서빙: `https://junorion.github.io/<앱-id>/privacy.html` |
+| 개인정보처리방침 | 공개 Pages 주소. 앱 저장소가 비공개면 `<앱-id>-privacy` 공개 저장소 (아래) |
 | 콘텐츠 등급·데이터 보안·타겟층 | 설문 답을 `store/LISTING.md` 에 미리 적어 둔다 |
 | 포그라운드 서비스 영상 | FGS 를 쓰는 앱만. 종류마다 하나씩, YouTube 일부 공개 링크 (아래) |
+| 광고 | 광고 있는 앱만 — 광고·광고 ID 신고, 데이터 보안, `app-ads.txt` (`ads`) |
 
 ## 개인정보처리방침
 
-수집하는 것이 없어도 URL 은 필수다. 스도쿠 `privacy.html` 을 출발점으로 쓰고 **실제와 맞게**
-고친다 — 광고(AdMob)·분석·계정·서버를 붙이면 수집 항목과 제3자 제공을 반드시 적고,
-Play Console 의 데이터 보안 답도 함께 바꾼다. 문의처는 앱 저장소
-(`https://github.com/junorion/<앱-id>`). 배포 후 `curl` 로 200 을 확인한다.
+수집하는 것이 없어도 URL 은 필수다. 종류가 가까운 견본(스도쿠 / 톡톡런 `privacy.html`)을 출발점으로 쓰고
+**실제와 맞게** 고친다 — 광고·지도·분석·계정·서버를 붙이면 수집 항목과 제3자 제공을 반드시 적고,
+Play Console 의 데이터 보안 답도 함께 바꾼다(광고는 `ads`). 배포 후 `curl` 로 200 을 확인한다.
+
+**어디에 두나** — Play 심사자가 열 수 있는 공개 주소여야 한다.
+- 앱 저장소가 **공개**(웹앱): 저장소 루트 `privacy.html` 을 Pages 로 → `https://junorion.github.io/<앱-id>/privacy.html`.
+  문의처는 앱 저장소(`https://github.com/junorion/<앱-id>`).
+- 앱 저장소가 **비공개**(Flutter 앱 등): Pages 를 쓸 수 없으니 방침만 담은 공개 저장소를 따로 만든다.
+  ```sh
+  gh repo create junorion/<앱-id>-privacy --public -d "<앱 이름> 개인정보처리방침"
+  # privacy.html 하나(+ README) 를 커밋·push 한 뒤
+  gh api -X POST repos/junorion/<앱-id>-privacy/pages -f 'source[branch]=main' -f 'source[path]=/'
+  ```
+  → `https://junorion.github.io/<앱-id>-privacy/privacy.html`. 문의처는 그 저장소의 Issues
+  (비공개 앱 저장소 링크는 남들이 못 연다). 앱 저장소에도 같은 `privacy.html` 을 두고, **고칠 때 두 곳을 함께** 고친다
+  (예: 톡톡런 `running/privacy.html` ↔ `junorion/running-privacy`).
+- 개발자 웹사이트(Play 연락처의 웹사이트 칸, AdMob `app-ads.txt`)는 앱마다 만들지 않고 `https://junorion.github.io`
+  (저장소 `junorion/junorion.github.io`) 하나를 함께 쓴다.
 
 ## 스토어 스크린샷
 
@@ -101,5 +122,7 @@ Play Console 작업은 대신 할 수 없다. `store/PUBLISHING.md` 를 앱에 �
 
 ## 출시 후 업데이트
 
-versionCode 올림 → `bundleRelease` → 콘솔에서 같은 트랙에 새 버전 → 출시 노트(ko/en).
-권한이나 수집 항목이 바뀌면 데이터 보안·개인정보처리방침을 같이 고친다.
+versionCode 올림(Flutter 는 `pubspec.yaml` 의 `+` 뒤) → AAB 빌드(`android-build` / `flutter-app`, 광고 앱이면
+`AD_SLOT=live` — `ads`) → 콘솔에서 같은 트랙에 새 버전 → 출시 노트(ko/en).
+권한이나 수집 항목이 바뀌면 데이터 보안·개인정보처리방침(두 곳에 있으면 둘 다)을 같이 고친다.
+포그라운드 서비스 종류가 바뀌거나 알림 모양이 크게 바뀌면 신고 영상도 다시 찍는다.
