@@ -35,9 +35,10 @@ git push
   `git pull origin main` (또는 `gh repo clone`) 으로 다시 받는다.
 - 커밋 메시지 끝에는 시스템이 알려주는 Co-Authored-By 줄을 붙인다.
 
-**Flutter 앱이면**: init 후 `index.html manifest.webmanifest sw.js icon.html icon-*.png android test .nojekyll`
-를 지우고, `export PATH=~/toolchain/flutter/bin:$PATH` 후 `flutter create --org com.junorion --project-name <앱-id> app`.
-CLAUDE.md 의 구조 표를 Flutter 에 맞게 고친다. `.gitignore` 는 그대로 두고 `app/.gitignore` 가 더해진다.
+**Flutter 앱이면**: init 후 `index.html manifest.webmanifest sw.js icon-*.png android test .nojekyll`
+를 지우고(`icon.html` 은 아이콘 원본이라 `store/` 로 옮긴다), `flutter-app` 스킬의 "시작" 대로
+`flutter create` → `apply.sh`. CLAUDE.md 의 구조 표를 Flutter 에 맞게 고친다. `.gitignore` 는 그대로 두고 `app/.gitignore` 가 더해진다.
+Flutter 앱 저장소를 비공개로 두면 개인정보처리방침은 따로 공개 저장소에 둔다(`play-release`).
 
 ## 3. Pages (웹앱)
 

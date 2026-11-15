@@ -29,7 +29,7 @@ junorion 의 앱 개발 템플릿([app_development](https://github.com/junorion/
 `PRODUCT.md` 와 `docs/` 는 처음부터 만들어 두지 않는다. 해당 skill 이 필요할 때 만든다.
 
 Flutter 처럼 웹이 아닌 앱이면 `index.html`·`sw.js`·`android/`·`test/` 를 지우고
-`flutter create` 로 만든 프로젝트를 `app/` 에 둔다. 이 문서와 skill 은 그대로 쓴다.
+`flutter create` 로 만든 프로젝트를 `app/` 에 둔다(`flutter-app` skill). 이 문서와 skill 은 그대로 쓴다.
 
 ## 아키텍처 원칙
 
@@ -107,7 +107,7 @@ skill 본문이 더 강한 리뷰를 요구해도 이 예산이 우선한다.
 
 | 묶음 | skill |
 |---|---|
-| 앱 공통 | `new-app` `web-verify` `android-build` `device` `app-icon` `play-release` `ads` |
+| 앱 공통 | `new-app` `web-verify` `android-build` `device` `flutter-app` `app-icon` `play-release` `ads` |
 | 개발 흐름 | `define-product` `shape-idea` `split-into-tasks` `implement` `babysit-specs` `human-review` |
 | 지식·도구 | `project-knowledge` `maintain-project-context` `tdd` `build-prototype` `explain-visually` `commit` |
 
