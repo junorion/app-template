@@ -45,13 +45,12 @@ Play Console 의 데이터 보안 답도 함께 바꾼다. 문의처는 앱 저�
 영상 하나에 담을 것: 앱에서 기능을 켬 → 홈으로 나가도 계속 돎(알림이 보임) → 알림을 펼쳐 상태 확인 → 끔.
 30초–1분이면 된다. 찍은 파일과 링크는 `store/LISTING.md` 의 해당 신고 답 아래에 적는다.
 
-**USB 로 찍을 수 있는 영상**(집 안에서 재현되는 것)은 `scripts/fgs-record.sh` 로 찍는다
-(폰 연결은 메모리의 테스트 기기 항목 — Windows `adb.exe`, WSL adb 는 쓰지 않는다).
+**USB 로 찍을 수 있는 영상**(집 안에서 재현되는 것)은 `device` 스킬의 `scripts/record.sh` 로 찍는다.
 
 ```bash
-R=.claude/skills/play-release/scripts/fgs-record.sh
+R=.claude/skills/device/scripts/record.sh
 $R start <앱-id>-fgs-mediaPlayback      # 화면 켜 둠 + 기기 안에서 녹화 시작
-# adb shell input tap / keyevent KEYCODE_HOME / cmd statusbar expand-notifications 로 조작
+# device/scripts/phone.sh tap·shot, adb shell input keyevent KEYCODE_HOME 등으로 조작
 $R stop  <앱-id>-fgs-mediaPlayback      # → C:\Users\junor\apk-share\fgs-videos\, 화면 설정 되돌림
 $R frames /mnt/c/Users/junor/apk-share/fgs-videos/<앱-id>-fgs-mediaPlayback.mp4   # 장면 모아 보기
 ```

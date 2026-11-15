@@ -67,12 +67,10 @@ Play 의 targetSdk 요구는 매년 오른다 — 출시 전 현재 요구를 �
 
 ## 실기기로 보내기
 
-APK 를 Windows 다운로드 폴더로 복사하고 사용자에게 전달·설치를 부탁한다:
-```sh
-cp app/build/outputs/apk/release/app-release.apk "/mnt/c/Users/junor/Downloads/<앱-id>-<versionName>.apk"
-```
-안내에는 기기(태블릿/폰), 전달 방법, "출처를 알 수 없는 앱 설치 허용" 위치를 적는다.
-테스트 태블릿은 **진동 모터가 없다** — 진동은 V35 폰에서 보거나 확인 불가로 표시한다.
+USB 로 연결돼 있으면 `device` 스킬의 `phone.sh install <apk>` 로 바로 깐다. 아니면 고정 이름으로
+`C:\Users\junor\apk-share\<앱-id>.apk` 에 복사하고 `phone.sh share` 로 LAN 에 공유한다.
+안내에는 기기(태블릿/폰), 받을 주소, "출처를 알 수 없는 앱 설치 허용" 위치를 적는다.
+테스트 태블릿은 **진동 모터가 없다** — 진동은 폰에서 보거나 확인 불가로 표시한다.
 
 ## 프레임워크 정적 빌드(Next.js 등)를 감쌀 때
 

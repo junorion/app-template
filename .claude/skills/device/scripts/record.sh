@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# 포그라운드 서비스(FGS) 신고 영상을 USB 로 연결한 폰에서 adb screenrecord 로 찍는다.
+# USB 로 연결한 폰 화면을 adb screenrecord 로 녹화한다 (Play 포그라운드 서비스 신고 영상 등).
 #
-#   fgs-record.sh start  <이름> [최대초=170]   녹화 시작(화면 켜 둠). 이어서 앱을 조작한다
-#   fgs-record.sh stop   <이름> [받을폴더]      녹화 정지 → PC 로 가져옴 → 화면 설정 되돌림
-#   fgs-record.sh frames <mp4>  [초,초,...]     확인용으로 여러 시점 장면을 PNG 한 장에 모음
+#   record.sh start  <이름> [최대초=170]   녹화 시작(화면 켜 둠). 이어서 앱을 조작한다
+#   record.sh stop   <이름> [받을폴더]      녹화 정지 → PC 로 가져옴 → 화면 설정 되돌림
+#   record.sh frames <mp4>  [초,초,...]     확인용으로 여러 시점 장면을 PNG 한 장에 모음
 #
 # 환경 변수
 #   ADB  adb 실행 파일 (기본: Windows adb — WSL 은 USB 를 못 본다)
@@ -17,13 +17,13 @@ set -euo pipefail
 
 ADB=${ADB:-/mnt/c/Users/junor/platform-tools/adb.exe}
 OUT=${OUT:-/mnt/c/Users/junor/apk-share/fgs-videos}
-STATE=/data/local/tmp/fgs-record.stayon   # 녹화 전 stay_on_while_plugged_in 값
+STATE=/data/local/tmp/stayon.prev   # 녹화 전 stay_on_while_plugged_in 값 (phone.sh 와 같은 파일)
 CHROME="/mnt/c/Program Files/Google/Chrome/Application/chrome.exe"
 
 a() { "$ADB" "$@" | tr -d '\r'; }
 # adb.exe 에는 Windows 경로를 넘겨야 한다
 hostpath() { case "$ADB" in *.exe) wslpath -w "$1" ;; *) echo "$1" ;; esac; }
-die() { echo "fgs-record: $*" >&2; exit 1; }
+die() { echo "record: $*" >&2; exit 1; }
 
 cmd=${1:-}; shift || true
 case "$cmd" in

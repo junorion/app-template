@@ -107,7 +107,7 @@ skill 본문이 더 강한 리뷰를 요구해도 이 예산이 우선한다.
 
 | 묶음 | skill |
 |---|---|
-| 앱 공통 | `new-app` `web-verify` `android-build` `app-icon` `play-release` |
+| 앱 공통 | `new-app` `web-verify` `android-build` `device` `app-icon` `play-release` |
 | 개발 흐름 | `define-product` `shape-idea` `split-into-tasks` `implement` `babysit-specs` `human-review` |
 | 지식·도구 | `project-knowledge` `maintain-project-context` `tdd` `build-prototype` `explain-visually` `commit` |
 
