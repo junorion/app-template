@@ -1,6 +1,6 @@
 ---
 name: play-release
-description: Google Play 출시 준비 — 요건(테스터 12명×14일, targetSdk), 스토어 자료(아이콘·그래픽·스크린샷·문안), 개인정보처리방침 페이지, AAB, 사용자가 Play Console 에서 할 단계 안내. 앱을 Play 에 올리거나 업데이트할 때 쓴다.
+description: Google Play 출시 준비 — 요건(테스터 12명×14일, targetSdk), 스토어 자료(아이콘·그래픽·스크린샷·문안), 개인정보처리방침 페이지, 포그라운드 서비스 영상(adb 녹화), AAB, 사용자가 Play Console 에서 할 단계 안내. 앱을 Play 에 올리거나 업데이트할 때 쓴다.
 ---
 
 # Play 스토어 출시
@@ -29,6 +29,7 @@ description: Google Play 출시 준비 — 요건(테스터 12명×14일, target
 | 문안 | 앱 이름(30자), 짧은 설명(80자), 자세한 설명(4000자) — 한국어·영어 |
 | 개인정보처리방침 | `privacy.html` 을 저장소 루트에 두고 Pages 로 서빙: `https://junorion.github.io/<앱-id>/privacy.html` |
 | 콘텐츠 등급·데이터 보안·타겟층 | 설문 답을 `store/LISTING.md` 에 미리 적어 둔다 |
+| 포그라운드 서비스 영상 | FGS 를 쓰는 앱만. 종류마다 하나씩, YouTube 일부 공개 링크 (아래) |
 
 ## 개인정보처리방침
 
@@ -36,6 +37,40 @@ description: Google Play 출시 준비 — 요건(테스터 12명×14일, target
 고친다 — 광고(AdMob)·분석·계정·서버를 붙이면 수집 항목과 제3자 제공을 반드시 적고,
 Play Console 의 데이터 보안 답도 함께 바꾼다. 문의처는 앱 저장소
 (`https://github.com/junorion/<앱-id>`). 배포 후 `curl` 로 200 을 확인한다.
+
+## 포그라운드 서비스 영상
+
+앱이 포그라운드 서비스(FGS)를 쓰면 Play Console 의 **앱 콘텐츠 → 포그라운드 서비스 권한**에서
+종류(`location`, `mediaPlayback`, `health` …)마다 사용 설명과 **영상 링크 하나**를 낸다.
+영상 하나에 담을 것: 앱에서 기능을 켬 → 홈으로 나가도 계속 돎(알림이 보임) → 알림을 펼쳐 상태 확인 → 끔.
+30초–1분이면 된다. 찍은 파일과 링크는 `store/LISTING.md` 의 해당 신고 답 아래에 적는다.
+
+**USB 로 찍을 수 있는 영상**(집 안에서 재현되는 것)은 `scripts/fgs-record.sh` 로 찍는다
+(폰 연결은 메모리의 테스트 기기 항목 — Windows `adb.exe`, WSL adb 는 쓰지 않는다).
+
+```bash
+R=.claude/skills/play-release/scripts/fgs-record.sh
+$R start <앱-id>-fgs-mediaPlayback      # 화면 켜 둠 + 기기 안에서 녹화 시작
+# adb shell input tap / keyevent KEYCODE_HOME / cmd statusbar expand-notifications 로 조작
+$R stop  <앱-id>-fgs-mediaPlayback      # → C:\Users\junor\apk-share\fgs-videos\, 화면 설정 되돌림
+$R frames /mnt/c/Users/junor/apk-share/fgs-videos/<앱-id>-fgs-mediaPlayback.mp4   # 장면 모아 보기
+```
+
+찍기 전에 할 것과 함정(톡톡런, 2026-11-15):
+- **광고 자리·시험 광고를 끈 빌드**를 설치한다. 다른 앱 알림은 미리 모두 지운다.
+- 삼성 기기 화면 녹화 버튼은 기종에 따라 막혀 있다(A32). adb `screenrecord` 는 된다. 단 **소리는 안 담긴다**.
+- 알림에 1초마다 바뀌는 카운트다운이 있으면 `uiautomator dump` 가 idle 을 못 기다려 실패한다.
+  `adb exec-out screencap -p` 로 스크린샷을 보고 **고정 좌표로 탭**한다.
+- 조작 사이에 2–4초씩 쉬어야 심사자가 무엇이 일어나는지 알아본다. 찍은 뒤 `frames` 로 장면을 확인한다.
+
+**바깥에서만 재현되는 영상**(`location` 처럼 걸어야 거리가 느는 것)은 사용자가 폰의 화면 녹화
+앱(삼성 화면 녹화, 막혔으면 XRecorder 등)으로 찍는다. 안내할 순서: 녹화 시작 → 앱에서 시작 →
+홈으로 나가 1분쯤 걷기 → 알림 펼쳐 값이 느는 것 보이기 → 앱으로 돌아와 끝내기 → 녹화 정지.
+집·동네가 지도에 보이면 공개 여부를 사용자에게 묻는다.
+
+**업로드는 사용자 몫이다.** YouTube Data API 로 올린 영상은 API 감사를 받기 전까지 강제로
+비공개가 되어 심사자가 볼 수 없다. PC 브라우저에서 YouTube Studio → 만들기 → 동영상 업로드 →
+공개 상태 **일부 공개** → 링크 복사 → Play Console 신고 칸에 붙여넣기 순서로 안내한다.
 
 ## 사용자 몫 (계정·신원이 걸린 일)
 
