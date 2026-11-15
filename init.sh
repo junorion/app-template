@@ -40,7 +40,7 @@ cat > README.md <<EOF
 - 테스트: \`node test/run.js\`
 - 할 일: [BACKLOG.md](BACKLOG.md)
 
-[app_development](https://github.com/junorion/app_development) 템플릿에서 시작했다.
+[app-template](https://github.com/junorion/app-template) 템플릿에서 시작했다.
 작업 규칙은 [CLAUDE.md](CLAUDE.md).
 EOF
 

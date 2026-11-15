@@ -1,12 +1,12 @@
 ---
 name: new-app
-description: 새 앱을 시작한다 — app_development 템플릿으로 GitHub 저장소(junorion/<앱-id>)를 만들고, 작업 공간에 클론해 init.sh 로 이름·패키지를 바꾸고, 첫 커밋·push·Pages 까지 켠다. "새 앱 만들자", "○○ 앱 시작" 같은 요청에 쓴다.
+description: 새 앱을 시작한다 — app-template 템플릿으로 GitHub 저장소(junorion/<앱-id>)를 만들고, 작업 공간에 클론해 init.sh 로 이름·패키지를 바꾸고, 첫 커밋·push·Pages 까지 켠다. "새 앱 만들자", "○○ 앱 시작" 같은 요청에 쓴다.
 ---
 
 # 새 앱 시작
 
 작업 공간: `/home/noble/app_development/` (git 아님). 앱마다 그 아래 디렉토리 = 저장소 하나.
-템플릿: `junorion/app_development` (로컬 `/home/noble/app_development/hub/`).
+템플릿: `junorion/app-template` (로컬 `/home/noble/app_development/hub/`).
 
 ## 1. 정할 것
 
@@ -23,7 +23,7 @@ description: 새 앱을 시작한다 — app_development 템플릿으로 GitHub 
 
 ```sh
 cd /home/noble/app_development
-gh repo create junorion/<앱-id> --public --template junorion/app_development --clone
+gh repo create junorion/<앱-id> --public --template junorion/app-template --clone
 cd <앱-id>
 git config user.name junorion && git config user.email junorion@gmail.com
 ./init.sh <앱-id> "<한국어 이름>" "<영어 짧은 이름>"

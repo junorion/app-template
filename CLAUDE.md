@@ -1,6 +1,6 @@
 # 작업 규칙
 
-junorion 의 앱 개발 템플릿([app_development](https://github.com/junorion/app_development))에서
+junorion 의 앱 개발 템플릿([app-template](https://github.com/junorion/app-template))에서
 만든 저장소다. 앱 하나 = 저장소 하나. 로컬 위치는 `/home/noble/app_development/<앱-id>/`.
 
 ## 언어

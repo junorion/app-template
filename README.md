@@ -1,4 +1,4 @@
-# app_development — 앱 개발 템플릿
+# app-template — 앱 개발 템플릿
 
 junorion 의 앱을 시작할 때 쓰는 GitHub 템플릿 저장소다. 웹(PWA) 단일 HTML + WebView
 안드로이드 래퍼 + Node 스텁 테스트 + 공통 Claude Code skill 이 들어 있다.
@@ -9,7 +9,7 @@ Claude Code 에서 `/new-app` 을 쓰거나, 직접:
 
 ```sh
 cd /home/noble/app_development
-gh repo create junorion/<앱-id> --public --template junorion/app_development --clone
+gh repo create junorion/<앱-id> --public --template junorion/app-template --clone
 cd <앱-id> && ./init.sh <앱-id> "<한국어 이름>" "<영어 짧은 이름>"
 ```
 
