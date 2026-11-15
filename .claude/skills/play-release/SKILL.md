@@ -25,7 +25,7 @@ description: Google Play 출시 준비 — 요건(테스터 12명×14일, target
 | AAB | `./gradlew bundleRelease` (`android-build`), 업로드 키 서명, versionCode 증가 |
 | 앱 아이콘 | 512×512 **32비트 PNG(알파 포함)** — `icon-512.png` (`app-icon`) |
 | 그래픽 이미지 | 1024×500 PNG — HTML 로 그려 `web-verify/scripts/shot.sh graphic.html out.png 1024 500` |
-| 휴대전화 스크린샷 | 2~8장, 9:16 권장(예: 1080×1920). 앱 상태를 심은 사본을 찍는다 |
+| 휴대전화 스크린샷 | 2~8장, 1080×1920(9:16). 원본을 찍고 `scripts/frame.sh` 로 제목·부제를 얹는다 (아래) |
 | 문안 | 앱 이름(30자), 짧은 설명(80자), 자세한 설명(4000자) — 한국어·영어 |
 | 개인정보처리방침 | `privacy.html` 을 저장소 루트에 두고 Pages 로 서빙: `https://junorion.github.io/<앱-id>/privacy.html` |
 | 콘텐츠 등급·데이터 보안·타겟층 | 설문 답을 `store/LISTING.md` 에 미리 적어 둔다 |
@@ -37,6 +37,28 @@ description: Google Play 출시 준비 — 요건(테스터 12명×14일, target
 고친다 — 광고(AdMob)·분석·계정·서버를 붙이면 수집 항목과 제3자 제공을 반드시 적고,
 Play Console 의 데이터 보안 답도 함께 바꾼다. 문의처는 앱 저장소
 (`https://github.com/junorion/<앱-id>`). 배포 후 `curl` 로 200 을 확인한다.
+
+## 스토어 스크린샷
+
+Play 규격: 각 변 320–3840px, 긴 변이 짧은 변의 2배 이하. 폰 원본(1080×2400 = 2.22:1)은 그대로 못 올린다.
+그래서 원본 위·아래 바를 잘라 내고 1080×1920 틀에 제목·부제와 함께 넣는다.
+
+1. **원본 찍기** — 둘 중 하나.
+   - 실기기: `device` 스킬 `phone.sh shot store/raw/1-ready.png`. 실제 데이터가 있어야 그럴듯한 화면
+     (러닝 기록, 지도)은 사용자가 실제로 쓴 뒤 찍는다. 시험 광고·다른 앱 알림이 없는 빌드·상태로.
+   - 웹앱: 앱 상태를 심는 촬영대 페이지를 만들어 `web-verify` 의 `shot.sh` 로 찍는다
+     (예: 스도쿠 `store/shots.html` — 실제 조작만으로 장면을 만든다).
+   - `store/raw/` 는 `.gitignore` 에 넣는다. 지도에 집·동네가 보이면 공개해도 되는지 사용자에게 묻는다.
+2. **문구** — `store/captions.txt`(영어는 `captions-en.txt`), 한 줄에 `원본이름|제목|부제`.
+   첫 두 장이 검색 결과에 보이니 앱의 핵심 두 가지를 앞에 둔다.
+3. **틀 씌우기** —
+   ```bash
+   F=.claude/skills/play-release/scripts/frame.sh
+   ACCENT='#2E9E5B' $F store/captions.txt              # 폰 원본(A32: 위 80·아래 126 px 자름)
+   TOP=0 BOTTOM=0 $F store/captions-en.txt store/raw-en # 바가 없는 웹 화면 원본
+   ```
+   → `store/screenshot-1.png …`(영어는 `screenshot-en-1.png …`). 다른 기종은 상태바·내비게이션 바 높이를 재서 `TOP`·`BOTTOM` 으로.
+4. 결과를 한 장에 모아 Read 로 보고, 레이아웃이 정해지면 사용자에게 보여 고르게 한다.
 
 ## 포그라운드 서비스 영상
 

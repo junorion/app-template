@@ -1,0 +1,34 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- 스토어 스크린샷 틀 1080×1920 (9:16). 위에 제목·부제, 아래에 둥근 모서리 폰 화면.
+     원본 스크린샷에서 위(상태바)·아래(내비게이션 바)를 잘라 내고 남은 화면을 틀에 맞춘다.
+     frame.sh 가 쿼리 대신 값을 심어 부른다: img, t(제목), s(부제), top, bottom(자를 px), accent, bg, ink -->
+<style>
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;font-family:system-ui,"Malgun Gothic",sans-serif}
+.cap{position:absolute;left:40px;right:40px;top:80px;text-align:center}
+.cap h1{margin:0;font-size:72px;font-weight:800;letter-spacing:-1px;line-height:1.15}
+.cap p{margin:18px 0 0;font-size:40px;font-weight:600;line-height:1.3}
+.phone{position:absolute;left:50%;transform:translateX(-50%);border-radius:48px;overflow:hidden;
+  box-shadow:0 24px 60px rgba(0,0,0,.18);background:#fff}
+.phone img{position:absolute;left:0;display:block}
+</style></head><body>
+<div class="cap"><h1 id="t"></h1><p id="s"></p></div>
+<div class="phone" id="ph"><img id="im" alt=""></div>
+<script>
+const q=new URLSearchParams(location.search);
+const v=(k,d)=>q.get(k)??d;
+document.body.style.background=v('bg','#F2F2F7');
+t.style.color=v('ink','#1C1C1E'); s.style.color=v('accent','#2E9E5B');
+t.textContent=v('t',''); s.textContent=v('s','');
+const TOP=+v('top',0), BOTTOM=+v('bottom',0);
+const BOX_TOP=330, BOX_BOTTOM=1870, MAX_W=900;          // 폰 화면이 들어갈 자리
+im.onload=()=>{
+  const w=im.naturalWidth, h=im.naturalHeight-TOP-BOTTOM;
+  let k=(BOX_BOTTOM-BOX_TOP)/h; if(w*k>MAX_W) k=MAX_W/w;  // 세로를 채우되 너무 넓으면 폭에 맞춤
+  ph.style.width=Math.round(w*k)+'px'; ph.style.height=Math.round(h*k)+'px';
+  ph.style.top=BOX_TOP+'px';
+  im.style.width=Math.round(w*k)+'px'; im.style.top=Math.round(-TOP*k)+'px';
+};
+im.src=v('img','');
+</script>
+</body></html>
